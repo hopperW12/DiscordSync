@@ -23,6 +23,14 @@ public class RequestManager {
         return requests.get(player);
     }
 
+    public Player getRequest(Token token) {
+        return requests.entrySet()
+                .stream()
+                .filter(entry -> token.equals(entry.getValue()))
+                .map(Map.Entry::getKey)
+                .findFirst().orElse(null);
+    }
+
     public void removeRequest(Player player) {
         requests.remove(player);
     }
