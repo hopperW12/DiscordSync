@@ -19,6 +19,10 @@ public class RequestManager {
         return token;
     }
 
+    public Token getRequest(Player player) {
+        return requests.get(player);
+    }
+
     public void removeRequest(Player player) {
         requests.remove(player);
     }
