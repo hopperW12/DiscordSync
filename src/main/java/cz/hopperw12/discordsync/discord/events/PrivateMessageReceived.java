@@ -10,6 +10,7 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.priv.PrivateMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 public class PrivateMessageReceived extends ListenerAdapter {
@@ -25,42 +26,40 @@ public class PrivateMessageReceived extends ListenerAdapter {
             return;
 
         DiscordSync main = DiscordSync.getInstance();
-        UserManager userManager = main.userManager;
-        RequestManager requestManager = main.requestManager;
+        Bukkit.getScheduler().runTask(main, () -> {
+            UserManager userManager = main.userManager;
+            RequestManager requestManager = main.requestManager;
 
-        String message = event.getMessage().getContentRaw();
-        User user = event.getAuthor();
-        Token token = new Token(message);
-        Player player = requestManager.getRequest(token);
+            String message = event.getMessage().getContentRaw();
+            User user = event.getAuthor();
+            Token token = new Token(message);
+            Player player = requestManager.getRequest(token);
 
-        //Neplatny token
-        if (player == null) {
-            user.openPrivateChannel().queue(channel -> {
-                channel.sendMessage("Tento token neexistuje!").queue();
-            });
-            return;
-        }
+            //Neplatny token
+            if (player == null) {
+                user.openPrivateChannel().queue(channel -> {
+                    channel.sendMessage("Tento token neexistuje!").queue();
+                });
+                return;
+            }
 
-        // Prošlý token
-        token = requestManager.getRequest(player);
-        if (token.hasExpired()) {
-            user.openPrivateChannel().queue(channel -> {
-                channel.sendMessage("Tento token expiroval!").queue();
-            });
-            return;
-        }
+            // Prošlý token
+            token = requestManager.getRequest(player);
+            if (token.hasExpired()) {
+                user.openPrivateChannel().queue(channel -> {
+                    channel.sendMessage("Tento token expiroval!").queue();
+                });
+                return;
+            }
 
-        //Platny token
-        RegisteredUser registeredUser = new RegisteredUser(player, user.getIdLong());
-        registeredUser.setLastOnline(System.currentTimeMillis());
+            //Platny token
+            RegisteredUser registeredUser = new RegisteredUser(player, user.getIdLong());
+            registeredUser.setLastOnline(System.currentTimeMillis());
 
-        requestManager.removeRequest(player);
-        userManager.registerUser(registeredUser);
+            requestManager.removeRequest(player);
+            userManager.registerUser(registeredUser);
 
-        user.openPrivateChannel().queue(channel -> channel.sendMessage("Pouzil jsi token.").queue());
-
+            user.openPrivateChannel().queue(channel -> channel.sendMessage("Pouzil jsi token.").queue());
+        });
     }
-
-
-
 }
