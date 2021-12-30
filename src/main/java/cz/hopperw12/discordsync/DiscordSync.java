@@ -34,7 +34,7 @@ public final class DiscordSync extends JavaPlugin {
 
     @Override
     public void onDisable() {
-
+        userManager.save();
     }
 
 

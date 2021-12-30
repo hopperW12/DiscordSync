@@ -46,8 +46,7 @@ public class PrivateMessageReceived extends ListenerAdapter {
 
         requestManager.removeRequest(player);
         userManager.registerUser(registeredUser);
-
-
+        userManager.save();
     }
 
 

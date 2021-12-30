@@ -1,11 +1,14 @@
 package cz.hopperw12.discordsync.user;
 
+import cz.hopperw12.discordsync.DiscordSync;
 import org.bukkit.entity.Player;
 
 import java.util.Objects;
 import java.util.UUID;
 
 public class RegisteredUser {
+    private UserManager userManager;
+
     private UUID minecraftUUID;
     private long discordUUID;
     private long lastOnline;
@@ -17,6 +20,8 @@ public class RegisteredUser {
     public RegisteredUser(UUID minecraftUUID, long discordUUID) {
         this.minecraftUUID = minecraftUUID;
         this.discordUUID = discordUUID;
+
+        this.userManager = DiscordSync.getInstance().userManager;
     }
 
     public UUID getMinecraftUUID() {
@@ -33,6 +38,7 @@ public class RegisteredUser {
 
     public void setLastOnline(long lastOnline) {
         this.lastOnline = lastOnline;
+        userManager.registerUser(this);
     }
 
     @Override
