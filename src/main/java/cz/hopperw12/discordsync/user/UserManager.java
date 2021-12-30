@@ -127,9 +127,13 @@ public class UserManager {
         List<RegisteredUser> users = getAll();
 
         for (RegisteredUser user : users) {
-            if (user.getLastOnline() + expiration < System.currentTimeMillis()) {
-                unregisterUser(user);
+            if (Bukkit.getPlayer(user.getMinecraftUUID()) != null) {
+                user.setLastOnline(System.currentTimeMillis());
+                continue;
             }
+
+            if (user.getLastOnline() + expiration < System.currentTimeMillis())
+                unregisterUser(user);
         }
     }
 }

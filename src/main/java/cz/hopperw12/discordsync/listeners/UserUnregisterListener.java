@@ -6,6 +6,7 @@ import cz.hopperw12.discordsync.events.UserUnregisterEvent;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
+import net.dv8tion.jda.api.exceptions.HierarchyException;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -45,11 +46,15 @@ public class UserUnregisterListener implements Listener {
             return;
         }
 
-        guild.removeRoleFromMember(member, role).queue();
-        member.modifyNickname(null).queue();
+        try {
+            guild.removeRoleFromMember(member, role).queue();
+            member.modifyNickname(null).queue();
+        } catch (HierarchyException e) {
+            main.getLogger().warning(e.getMessage());
+        }
 
         member.getUser().openPrivateChannel().queue(channel ->
-            channel.sendMessage("Byl jsi odebrán z našeho serveru z důvodu neaktivity").queue()
+            channel.sendMessage("Byl jsi odebrán ze serveru z důvodu neaktivity").queue()
         );
     }
 }

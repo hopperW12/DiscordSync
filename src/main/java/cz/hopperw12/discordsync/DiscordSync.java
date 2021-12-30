@@ -37,7 +37,7 @@ public final class DiscordSync extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        bot.jda.shutdown();
+        bot.jda.shutdownNow();
         userManager.save();
     }
 

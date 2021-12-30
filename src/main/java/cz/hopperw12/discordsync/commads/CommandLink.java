@@ -38,10 +38,13 @@ public class CommandLink implements CommandExecutor {
         }
 
         TextComponent msg = new TextComponent("Použíj tento token: ");
+        msg.setBold(true);
+        msg.setItalic(true);
         msg.setColor(ChatColor.DARK_GRAY);
 
         TextComponent tokenMsg = new TextComponent(token.toString());
         tokenMsg.setBold(true);
+        tokenMsg.setUnderlined(true);
         tokenMsg.setColor(ChatColor.GREEN);
         tokenMsg.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("Klikni pro zkopírování do schránky").create()));
         tokenMsg.setClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, token.toString()));
