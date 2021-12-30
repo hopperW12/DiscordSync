@@ -1,6 +1,9 @@
 package cz.hopperw12.discordsync.user;
 
 import cz.hopperw12.discordsync.DiscordSync;
+import cz.hopperw12.discordsync.events.UserRegisterEvent;
+import cz.hopperw12.discordsync.events.UserUnregisterEvent;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
@@ -29,10 +32,24 @@ public class UserManager {
             main.getLogger().severe("Failed to load users.yml");
             e.printStackTrace();
         }
+
+        long checkPeriod = main.getConfig().getLong("timings.user.check");
+        checkPeriod *= 60 * 20;
+
+        Bukkit.getScheduler().runTaskTimer(main, this::unregisterExpired, 0L, checkPeriod);
     }
 
     @SuppressWarnings("unchecked")
     public void registerUser(RegisteredUser user) {
+        updateUser(user);
+
+        UserRegisterEvent registerEvent = new UserRegisterEvent(user);
+        Bukkit.getPluginManager().callEvent(registerEvent);
+
+        save();
+    }
+
+    public void updateUser(RegisteredUser user) {
         String path = String.format("players.%s", user.getPlayerName());
 
         cfg.set(path + ".minecraftUUID", user.getMinecraftUUID().toString());
@@ -47,6 +64,9 @@ public class UserManager {
         String path = String.format("players.%s", user.getPlayerName());
 
         cfg.set(path, null);
+
+        UserUnregisterEvent unregisterEvent = new UserUnregisterEvent(user);
+        Bukkit.getPluginManager().callEvent(unregisterEvent);
 
         save();
     }
@@ -97,6 +117,19 @@ public class UserManager {
         } catch (IOException e) {
             main.getLogger().severe("Failed to save users.yml");
             e.printStackTrace();
+        }
+    }
+
+    public void unregisterExpired() {
+        long expiration = main.getConfig().getLong("timings.user.expiration");
+        expiration *= 60 * 1000;
+
+        List<RegisteredUser> users = getAll();
+
+        for (RegisteredUser user : users) {
+            if (user.getLastOnline() + expiration < System.currentTimeMillis()) {
+                unregisterUser(user);
+            }
         }
     }
 }

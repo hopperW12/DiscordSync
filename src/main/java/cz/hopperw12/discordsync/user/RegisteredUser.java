@@ -43,7 +43,7 @@ public class RegisteredUser {
 
     public void setLastOnline(long lastOnline) {
         this.lastOnline = lastOnline;
-        userManager.registerUser(this);
+        userManager.updateUser(this);
     }
 
     @Override

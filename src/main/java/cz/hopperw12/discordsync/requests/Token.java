@@ -1,16 +1,22 @@
 package cz.hopperw12.discordsync.requests;
 
+import cz.hopperw12.discordsync.DiscordSync;
+
 import java.util.Objects;
 import java.util.Random;
 
 public class Token {
-    private static final long TOKEN_EXPIRATION_TIME = 300_000L;
-
     private final String value;
     private final long ttl;
 
     public Token(String value) {
-        this(value, System.currentTimeMillis() + TOKEN_EXPIRATION_TIME);
+        DiscordSync main = DiscordSync.getInstance();
+
+        long expiration = main.getConfig().getLong("timings.token.expiration");
+        expiration *= 60 * 1000;
+
+        this.value = value;
+        this.ttl = System.currentTimeMillis() + expiration;
     }
 
     public Token(String value, long ttl) {

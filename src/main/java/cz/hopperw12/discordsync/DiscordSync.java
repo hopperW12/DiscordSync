@@ -15,7 +15,6 @@ public final class DiscordSync extends JavaPlugin {
 
     public RequestManager requestManager;
     public UserManager userManager;
-    public Config config;
     public Bot bot;
 
     @Override
@@ -25,16 +24,15 @@ public final class DiscordSync extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        saveDefaultConfig();
+
         registerCommands();
         registerEvents();
-
-        config = new Config();
 
         requestManager = new RequestManager();
         userManager = new UserManager();
 
-        bot = new Bot(config.getString("token"));
-
+        bot = new Bot(getConfig().getString("bot.token"));
     }
 
     @Override

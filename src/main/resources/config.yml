@@ -1,1 +1,9 @@
-token: discordToken
+bot:
+  token: discordToken
+
+timings: # in minutes
+  user:
+    check: 60
+    expiration: 7200
+  token:
+    expiration: 5
