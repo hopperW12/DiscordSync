@@ -9,7 +9,6 @@ import cz.hopperw12.discordsync.user.UserManager;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.checkerframework.checker.units.qual.C;
 
 public final class DiscordSync extends JavaPlugin {
 
