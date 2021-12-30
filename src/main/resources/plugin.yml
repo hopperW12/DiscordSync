@@ -1,5 +1,5 @@
 name: DiscordSync
-version: '${project.version}'
+version: 'v${project.version}-${git.commit.id.abbrev}'
 main: cz.hopperw12.discordsync.DiscordSync
 api-version: 1.18
 authors: [hopperW12, novosadkry]
