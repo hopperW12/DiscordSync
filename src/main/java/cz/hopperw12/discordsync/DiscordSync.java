@@ -1,8 +1,11 @@
 package cz.hopperw12.discordsync;
 
 import cz.hopperw12.discordsync.commads.CommandLink;
+import cz.hopperw12.discordsync.events.PlayerQuitListener;
 import cz.hopperw12.discordsync.requests.RequestManager;
 import cz.hopperw12.discordsync.user.UserManager;
+import org.bukkit.Bukkit;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class DiscordSync extends JavaPlugin {
@@ -20,6 +23,9 @@ public final class DiscordSync extends JavaPlugin {
     @Override
     public void onEnable() {
         registerCommands();
+        registerEvents();
+
+        //TODO - setup bot
 
         requestManager = new RequestManager();
         userManager = new UserManager();
@@ -36,6 +42,13 @@ public final class DiscordSync extends JavaPlugin {
 
         getCommand("link").setExecutor(new CommandLink());
 
+    }
+
+
+    private void registerEvents() {
+
+        PluginManager manager = Bukkit.getPluginManager();
+        manager.registerEvents(new PlayerQuitListener(), this);
     }
 
     public static DiscordSync getInstance() {
