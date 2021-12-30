@@ -18,7 +18,7 @@ public class AuthMeLoginListener implements Listener {
         UserManager userManager = main.userManager;
 
         if (!userManager.isRegistered(player))
-            player.sendMessage(ChatColor.DARK_RED + "Před pokračování propoj ůčet s discorde! (/link)");
+            player.sendMessage(ChatColor.DARK_RED + "Před pokračování propoj účet s discordem! (/link)");
     }
 
 }
