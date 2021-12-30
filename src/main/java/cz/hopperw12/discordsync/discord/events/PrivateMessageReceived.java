@@ -36,7 +36,7 @@ public class PrivateMessageReceived extends ListenerAdapter {
         //Neplatny token
         if (player == null) {
             user.openPrivateChannel().queue(channel -> {
-                channel.sendMessage("Tento token neexistuje").queue();
+                channel.sendMessage("Tento token neexistuje!").queue();
             });
             return;
         }
@@ -47,6 +47,9 @@ public class PrivateMessageReceived extends ListenerAdapter {
         requestManager.removeRequest(player);
         userManager.registerUser(registeredUser);
         userManager.save();
+
+        user.openPrivateChannel().queue(channel -> channel.sendMessage("Pouzil jsi token.").queue());
+
     }
 
 
