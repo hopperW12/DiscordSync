@@ -37,19 +37,15 @@ public final class DiscordSync extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        bot.jda.shutdown();
         userManager.save();
     }
 
-
     private void registerCommands() {
-
         getCommand("link").setExecutor(new CommandLink());
-
     }
 
-
     private void registerEvents() {
-
         PluginManager manager = Bukkit.getPluginManager();
 
         manager.registerEvents(new PlayerQuitListener(), this);
