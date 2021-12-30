@@ -35,7 +35,7 @@ public class UserManager {
     public void registerUser(RegisteredUser user) {
         String path = String.format("players.%s", user.getPlayerName());
 
-        cfg.set(path + ".minecraftUUID", user.getMinecraftUUID());
+        cfg.set(path + ".minecraftUUID", user.getMinecraftUUID().toString());
         cfg.set(path + ".discordUUID", user.getDiscordUUID());
         cfg.set(path + ".lastOnline", user.getLastOnline());
 
