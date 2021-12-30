@@ -13,6 +13,8 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+import java.util.UUID;
+
 public class PrivateMessageReceived extends ListenerAdapter {
 
     private JDA jda;
@@ -33,10 +35,10 @@ public class PrivateMessageReceived extends ListenerAdapter {
             String message = event.getMessage().getContentRaw();
             User user = event.getAuthor();
             Token token = new Token(message);
-            Player player = requestManager.getRequest(token);
+            UUID playerUUID = requestManager.getRequest(token);
 
             //Neplatny token
-            if (player == null) {
+            if (playerUUID == null) {
                 user.openPrivateChannel().queue(channel -> {
                     channel.sendMessage("Tento token neexistuje!").queue();
                 });
@@ -44,7 +46,7 @@ public class PrivateMessageReceived extends ListenerAdapter {
             }
 
             // Prošlý token
-            token = requestManager.getRequest(player);
+            token = requestManager.getRequest(playerUUID);
             if (token.hasExpired()) {
                 user.openPrivateChannel().queue(channel -> {
                     channel.sendMessage("Tento token expiroval!").queue();
@@ -53,10 +55,10 @@ public class PrivateMessageReceived extends ListenerAdapter {
             }
 
             //Platny token
-            RegisteredUser registeredUser = new RegisteredUser(player, user.getIdLong());
+            RegisteredUser registeredUser = new RegisteredUser(playerUUID, user.getIdLong());
             registeredUser.setLastOnline(System.currentTimeMillis());
 
-            requestManager.removeRequest(player);
+            requestManager.removeRequest(playerUUID);
             userManager.registerUser(registeredUser);
 
             user.openPrivateChannel().queue(channel -> channel.sendMessage("Pouzil jsi token.").queue());
