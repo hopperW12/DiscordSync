@@ -5,12 +5,17 @@ import cz.hopperw12.discordsync.user.UserManager;
 import fr.xephi.authme.api.v3.AuthMeApi;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityEvent;
 import org.bukkit.event.player.PlayerEvent;
 
 public class ListenerService {
 
     public static boolean shouldCancelEvent(PlayerEvent event) {
         return shouldCancelEvent(event.getPlayer());
+    }
+
+    public static boolean shouldCancelEvent(EntityEvent event) {
+        return shouldCancelEvent(event.getEntity());
     }
 
     public static boolean shouldCancelEvent(Entity entity) {
