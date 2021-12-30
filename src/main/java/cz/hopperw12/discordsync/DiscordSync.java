@@ -1,6 +1,7 @@
 package cz.hopperw12.discordsync;
 
 import cz.hopperw12.discordsync.commads.CommandLink;
+import cz.hopperw12.discordsync.events.PlayerJoinListener;
 import cz.hopperw12.discordsync.events.PlayerQuitListener;
 import cz.hopperw12.discordsync.requests.RequestManager;
 import cz.hopperw12.discordsync.user.UserManager;
@@ -48,7 +49,9 @@ public final class DiscordSync extends JavaPlugin {
     private void registerEvents() {
 
         PluginManager manager = Bukkit.getPluginManager();
+
         manager.registerEvents(new PlayerQuitListener(), this);
+        manager.registerEvents(new PlayerJoinListener(), this);
     }
 
     public static DiscordSync getInstance() {
