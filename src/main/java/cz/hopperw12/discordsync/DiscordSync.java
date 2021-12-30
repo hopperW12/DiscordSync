@@ -2,8 +2,7 @@ package cz.hopperw12.discordsync;
 
 import cz.hopperw12.discordsync.commads.CommandLink;
 import cz.hopperw12.discordsync.discord.Bot;
-import cz.hopperw12.discordsync.events.PlayerJoinListener;
-import cz.hopperw12.discordsync.events.PlayerQuitListener;
+import cz.hopperw12.discordsync.listeners.*;
 import cz.hopperw12.discordsync.requests.RequestManager;
 import cz.hopperw12.discordsync.user.UserManager;
 import org.bukkit.Bukkit;
@@ -57,6 +56,10 @@ public final class DiscordSync extends JavaPlugin {
 
         manager.registerEvents(new PlayerQuitListener(), this);
         manager.registerEvents(new PlayerJoinListener(), this);
+
+        manager.registerEvents(new PlayerListener(), this);
+        manager.registerEvents(new BlockListener(), this);
+        manager.registerEvents(new EntityListener(), this);
     }
 
     public static DiscordSync getInstance() {

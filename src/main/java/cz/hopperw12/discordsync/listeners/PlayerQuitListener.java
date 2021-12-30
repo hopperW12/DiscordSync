@@ -1,4 +1,4 @@
-package cz.hopperw12.discordsync.events;
+package cz.hopperw12.discordsync.listeners;
 
 import cz.hopperw12.discordsync.DiscordSync;
 import cz.hopperw12.discordsync.user.RegisteredUser;
@@ -6,12 +6,12 @@ import cz.hopperw12.discordsync.user.UserManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
-public class PlayerJoinListener implements Listener {
+public class PlayerQuitListener implements Listener {
 
     @EventHandler
-    public void onJoin(PlayerJoinEvent event) {
+    public void onQuit(PlayerQuitEvent event) {
 
         DiscordSync main = DiscordSync.getInstance();
         UserManager userManager = main.userManager;
