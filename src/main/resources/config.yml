@@ -2,8 +2,9 @@ bot:
   token: discordToken
 
 discord:
-  groupID: 0
+  roleID: 0
   channelID: 0
+  guildID: 0
 
 timings: # in minutes
   user:
