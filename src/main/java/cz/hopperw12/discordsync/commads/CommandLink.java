@@ -30,10 +30,12 @@ public class CommandLink implements CommandExecutor {
             return false;
         }
 
-        if (!requestManager.hasRequest(player))
-            requestManager.addRequest(player);
-
         Token token = requestManager.getRequest(player);
+
+        if (token == null || token.hasExpired()) {
+            requestManager.clearExpired();
+            token = requestManager.addRequest(player);
+        }
 
         TextComponent msg = new TextComponent("Použíj tento token: ");
         msg.setColor(ChatColor.DARK_GRAY);
