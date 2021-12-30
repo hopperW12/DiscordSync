@@ -41,6 +41,15 @@ public class PrivateMessageReceived extends ListenerAdapter {
             return;
         }
 
+        // Prošlý token
+        token = requestManager.getRequest(player);
+        if (token.hasExpired()) {
+            user.openPrivateChannel().queue(channel -> {
+                channel.sendMessage("Tento token expiroval!").queue();
+            });
+            return;
+        }
+
         //Platny token
         RegisteredUser registeredUser = new RegisteredUser(player, user.getIdLong());
         registeredUser.setLastOnline(System.currentTimeMillis());

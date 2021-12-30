@@ -4,10 +4,26 @@ import java.util.Objects;
 import java.util.Random;
 
 public class Token {
+    private static final long TOKEN_EXPIRATION_TIME = 300_000L;
+
     private final String value;
+    private final long ttl;
 
     public Token(String value) {
+        this(value, System.currentTimeMillis() + TOKEN_EXPIRATION_TIME);
+    }
+
+    public Token(String value, long ttl) {
         this.value = value;
+        this.ttl = ttl;
+    }
+
+    public long getTTL() {
+        return ttl;
+    }
+
+    public boolean hasExpired() {
+        return ttl < System.currentTimeMillis();
     }
 
     @Override

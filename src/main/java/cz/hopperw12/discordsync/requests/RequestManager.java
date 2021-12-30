@@ -6,7 +6,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class RequestManager {
-    private Map<Player, Token> requests = new HashMap<>();
+    private Map<Player, Token> requests;
+
+    public RequestManager() {
+        requests = new HashMap<>();
+    }
 
     public Token addRequest(Player player) {
         Token token;
@@ -37,5 +41,10 @@ public class RequestManager {
 
     public boolean hasRequest(Player player) {
         return requests.containsKey(player);
+    }
+
+    public void clearExpired() {
+        requests.entrySet()
+                .removeIf(entry -> entry.getValue().getTTL() < System.currentTimeMillis());
     }
 }
