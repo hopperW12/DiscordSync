@@ -43,10 +43,10 @@ public class PrivateMessageReceived extends ListenerAdapter {
 
         //Platny token
         RegisteredUser registeredUser = new RegisteredUser(player, user.getIdLong());
+        registeredUser.setLastOnline(System.currentTimeMillis());
 
         requestManager.removeRequest(player);
         userManager.registerUser(registeredUser);
-        userManager.save();
 
         user.openPrivateChannel().queue(channel -> channel.sendMessage("Pouzil jsi token.").queue());
 
