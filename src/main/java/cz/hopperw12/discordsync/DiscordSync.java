@@ -54,6 +54,7 @@ public final class DiscordSync extends JavaPlugin {
 
         manager.registerEvents(new PlayerQuitListener(), this);
         manager.registerEvents(new PlayerJoinListener(), this);
+        manager.registerEvents(new AuthMeLoginListener(), this);
 
         manager.registerEvents(new PlayerListener(), this);
         manager.registerEvents(new BlockListener(), this);
