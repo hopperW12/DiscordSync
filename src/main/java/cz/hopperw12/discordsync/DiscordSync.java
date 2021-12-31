@@ -1,6 +1,7 @@
 package cz.hopperw12.discordsync;
 
 import cz.hopperw12.discordsync.commads.CommandLink;
+import cz.hopperw12.discordsync.commads.CommandUnlink;
 import cz.hopperw12.discordsync.discord.Bot;
 import cz.hopperw12.discordsync.listeners.*;
 import cz.hopperw12.discordsync.requests.RequestManager;
@@ -43,6 +44,7 @@ public final class DiscordSync extends JavaPlugin {
 
     private void registerCommands() {
         getCommand("link").setExecutor(new CommandLink());
+        getCommand("unlink").setExecutor(new CommandUnlink());
     }
 
     private void registerEvents() {
