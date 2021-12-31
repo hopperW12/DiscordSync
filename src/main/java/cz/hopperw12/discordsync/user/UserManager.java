@@ -97,9 +97,13 @@ public class UserManager {
         save();
     }
 
+    public boolean isRegistered(long discordUUID) {
+        String path = String.format("links.%s", discordUUID);
+        return cfg.isSet(path);
+    }
+
     public boolean isRegistered(OfflinePlayer player) {
         String path = String.format("players.%s", player.getUniqueId());
-
         return cfg.isSet(path);
     }
 

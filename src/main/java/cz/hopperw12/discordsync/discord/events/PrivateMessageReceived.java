@@ -53,6 +53,13 @@ public class PrivateMessageReceived extends ListenerAdapter {
                 return;
             }
 
+            if (userManager.isRegistered(user.getIdLong())) {
+                user.openPrivateChannel().queue(channel -> {
+                    channel.sendMessage("Tento účet je již propojen s účtem jiným!").queue();
+                });
+                return;
+            }
+
             //Platny token
             RegisteredUser registeredUser = new RegisteredUser(playerUUID, user.getIdLong());
             registeredUser.setLastOnline(System.currentTimeMillis());
