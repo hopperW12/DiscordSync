@@ -7,6 +7,7 @@ import cz.hopperw12.discordsync.events.UserUnregisterEvent;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
+import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.exceptions.HierarchyException;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -55,11 +56,14 @@ public class UserUnregisterListener implements Listener {
             return;
         }
 
+        User user = member.getUser();
+        String discordAccountName = user.getName() + "#" + user.getDiscriminator();
+
         try {
             guild.removeRoleFromMember(member, role).queue();
             member.modifyNickname(null).queue();
         } catch (HierarchyException e) {
-            main.getLogger().warning(e.getMessage());
+            main.getLogger().warning(e.getMessage() + " (" + discordAccountName + ")");
         }
 
         if (player != null)

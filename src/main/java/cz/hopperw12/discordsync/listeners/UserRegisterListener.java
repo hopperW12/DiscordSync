@@ -27,6 +27,9 @@ public class UserRegisterListener implements Listener {
         var registerUser = event.getUser();
         Guild guild = bot.jda.getGuildById(guildID);
 
+        OfflinePlayer offlinePlayer = registerUser.getOfflinePlayer();
+        Player player = offlinePlayer.getPlayer();
+
         if (guild == null) {
             main.getLogger().warning("Defined guildID doesn't match any guilds");
             return;
@@ -45,17 +48,14 @@ public class UserRegisterListener implements Listener {
         if (member == null)
             return;
 
-        try {
-            member.modifyNickname(registerUser.getPlayerName()).queue();
-        } catch (HierarchyException e) {
-            main.getLogger().warning(e.getMessage());
-        }
-
         User user = member.getUser();
         String discordAccountName = user.getName() + "#" + user.getDiscriminator();
 
-        OfflinePlayer offlinePlayer = registerUser.getOfflinePlayer();
-        Player player = offlinePlayer.getPlayer();
+        try {
+            member.modifyNickname(registerUser.getPlayerName()).queue();
+        } catch (HierarchyException e) {
+            main.getLogger().warning(e.getMessage() + " (" + discordAccountName + ")");
+        }
 
         if (player != null)
             player.sendMessage("Účet byl úspěšně propojen s tvým Discord účtem " + discordAccountName);
