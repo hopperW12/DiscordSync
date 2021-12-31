@@ -84,6 +84,18 @@ public class UserManager {
         unregisterUser(new RegisteredUser(UUID.fromString(minecraftUUID), discordUUID));
     }
 
+    public void unregisterUser(String playerName) {
+        List<RegisteredUser> users = getAll();
+
+        for (RegisteredUser user : users) {
+            if (!user.getPlayerName().equals(playerName))
+                continue;
+
+            unregisterUser(user);
+            break;
+        }
+    }
+
     public void unregisterUser(RegisteredUser user) {
         String path = String.format("players.%s", user.getMinecraftUUID());
         cfg.set(path, null);
@@ -105,6 +117,19 @@ public class UserManager {
     public boolean isRegistered(OfflinePlayer player) {
         String path = String.format("players.%s", player.getUniqueId());
         return cfg.isSet(path);
+    }
+
+    public boolean isRegistered(String playerName) {
+        List<RegisteredUser> users = getAll();
+
+        for (RegisteredUser user : users) {
+            if (!user.getPlayerName().equals(playerName))
+                continue;
+
+            return true;
+        }
+
+        return false;
     }
 
     public RegisteredUser get(OfflinePlayer player) {
