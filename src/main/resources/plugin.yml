@@ -6,3 +6,6 @@ authors: [hopperW12, novosadkry]
 depend: [AuthMe]
 commands:
   link:
+  unlink:
+    usage: "Usage: /unlink <player>"
+
