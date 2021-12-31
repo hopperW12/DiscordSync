@@ -33,7 +33,7 @@ public class UserManager {
             e.printStackTrace();
         }
 
-        long checkPeriod = main.getConfig().getLong("timings.user.check");
+        long checkPeriod = main.getConfig().getLong("timings.user.check-expiration");
         checkPeriod *= 60 * 20;
 
         Bukkit.getScheduler().runTaskTimer(main, this::unregisterExpired, 0L, checkPeriod);
@@ -150,7 +150,7 @@ public class UserManager {
     }
 
     public void unregisterExpired() {
-        long expiration = main.getConfig().getLong("timings.user.expiration");
+        long expiration = main.getConfig().getLong("timings.user.expire-in");
         expiration *= 60 * 1000;
 
         List<RegisteredUser> users = getAll();

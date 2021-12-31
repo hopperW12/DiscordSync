@@ -8,7 +8,7 @@ discord:
 
 timings: # in minutes
   user:
-    check: 60
-    expiration: 7200
+    expire-in: 7200
+    check-expiration: 60
   token:
-    expiration: 5
+    expire-in: 5

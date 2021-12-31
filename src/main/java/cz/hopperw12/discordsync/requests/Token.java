@@ -12,7 +12,7 @@ public class Token {
     public Token(String value) {
         DiscordSync main = DiscordSync.getInstance();
 
-        long expiration = main.getConfig().getLong("timings.token.expiration");
+        long expiration = main.getConfig().getLong("timings.token.expire-in");
         expiration *= 60 * 1000;
 
         this.value = value;
