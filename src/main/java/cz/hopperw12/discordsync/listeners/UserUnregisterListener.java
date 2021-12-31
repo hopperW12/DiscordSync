@@ -21,6 +21,12 @@ public class UserUnregisterListener implements Listener {
         DiscordSync main = DiscordSync.getInstance();
         Bot bot = main.bot;
 
+        OfflinePlayer offlinePlayer = event.getUser().getOfflinePlayer();
+        Player player = offlinePlayer.getPlayer();
+
+        if (event.getReason() == UserUnregisterEvent.Reason.INACTIVITY)
+            main.getLogger().info("Unlinking player " + offlinePlayer.getName() + " due to inactivity");
+
         Bukkit.dispatchCommand(
             Bukkit.getConsoleSender(),
             String.format("easywl remove %s", event.getUser().getPlayerName())
@@ -56,14 +62,11 @@ public class UserUnregisterListener implements Listener {
             main.getLogger().warning(e.getMessage());
         }
 
-        OfflinePlayer offlinePlayer = event.getUser().getOfflinePlayer();
-        Player player = offlinePlayer.getPlayer();
-
         if (player != null)
             player.kickPlayer("Tvůj účet byl úspěšně odpojen. Pro znovu-získání přístupu napiš členovi Admin-Teamu.");
 
         member.getUser().openPrivateChannel().queue(channel ->
-            channel.sendMessage(Messages.getPlayerUnregisteredMessage()).queue()
+            channel.sendMessage(Messages.getPlayerUnregisteredMessage(event.getReason())).queue()
         );
     }
 }

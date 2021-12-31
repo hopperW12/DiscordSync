@@ -61,18 +61,18 @@ public class UserManager {
         save();
     }
 
-    public void unregisterUser(OfflinePlayer player) {
-        unregisterUser(player.getUniqueId());
+    public void unregisterUser(OfflinePlayer player, UserUnregisterEvent.Reason reason) {
+        unregisterUser(player.getUniqueId(), reason);
     }
 
-    public void unregisterUser(UUID minecraftUUID) {
+    public void unregisterUser(UUID minecraftUUID, UserUnregisterEvent.Reason reason) {
         String path = String.format("players.%s", minecraftUUID);
         long discordUUID = cfg.getLong(path + ".discord.uuid");
 
-        unregisterUser(new RegisteredUser(minecraftUUID, discordUUID));
+        unregisterUser(new RegisteredUser(minecraftUUID, discordUUID), reason);
     }
 
-    public void unregisterUser(long discordUUID) {
+    public void unregisterUser(long discordUUID, UserUnregisterEvent.Reason reason) {
         String path = String.format("links.%s", discordUUID);
 
         if (!cfg.isSet(path))
@@ -81,29 +81,29 @@ public class UserManager {
         String minecraftUUID = cfg.getString(path);
         if (minecraftUUID == null) return;
 
-        unregisterUser(new RegisteredUser(UUID.fromString(minecraftUUID), discordUUID));
+        unregisterUser(new RegisteredUser(UUID.fromString(minecraftUUID), discordUUID), reason);
     }
 
-    public void unregisterUser(String playerName) {
+    public void unregisterUser(String playerName, UserUnregisterEvent.Reason reason) {
         List<RegisteredUser> users = getAll();
 
         for (RegisteredUser user : users) {
             if (!user.getPlayerName().equals(playerName))
                 continue;
 
-            unregisterUser(user);
+            unregisterUser(user, reason);
             break;
         }
     }
 
-    public void unregisterUser(RegisteredUser user) {
+    public void unregisterUser(RegisteredUser user, UserUnregisterEvent.Reason reason) {
         String path = String.format("players.%s", user.getMinecraftUUID());
         cfg.set(path, null);
 
         path = String.format("links.%s", user.getDiscordUUID());
         cfg.set(path, null);
 
-        UserUnregisterEvent unregisterEvent = new UserUnregisterEvent(user);
+        UserUnregisterEvent unregisterEvent = new UserUnregisterEvent(user, reason);
         Bukkit.getPluginManager().callEvent(unregisterEvent);
 
         save();
@@ -187,7 +187,7 @@ public class UserManager {
                 continue;
 
             if (user.getLastOnline() + expiration < System.currentTimeMillis())
-                unregisterUser(user);
+                unregisterUser(user, UserUnregisterEvent.Reason.INACTIVITY);
         }
     }
 

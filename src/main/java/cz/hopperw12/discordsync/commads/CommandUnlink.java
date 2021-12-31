@@ -1,6 +1,7 @@
 package cz.hopperw12.discordsync.commads;
 
 import cz.hopperw12.discordsync.DiscordSync;
+import cz.hopperw12.discordsync.events.UserUnregisterEvent;
 import cz.hopperw12.discordsync.user.UserManager;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -38,7 +39,7 @@ public class CommandUnlink implements CommandExecutor {
                 }
 
                 players.remove(playerName);
-                userManager.unregisterUser(playerName);
+                userManager.unregisterUser(playerName, UserUnregisterEvent.Reason.MANUAL);
                 return true;
             }
 
@@ -53,7 +54,7 @@ public class CommandUnlink implements CommandExecutor {
                 return true;
             }
 
-            userManager.unregisterUser(playerName);
+            userManager.unregisterUser(playerName, UserUnregisterEvent.Reason.MANUAL);
             player.sendMessage(ChatColor.GREEN + "Hráč byl odpojen.");
             return true;
         }
@@ -68,7 +69,7 @@ public class CommandUnlink implements CommandExecutor {
                 return true;
             }
 
-            userManager.unregisterUser(playerName);
+            userManager.unregisterUser(playerName, UserUnregisterEvent.Reason.MANUAL);
             console.sendMessage("Player unlinked");
             return true;
         }

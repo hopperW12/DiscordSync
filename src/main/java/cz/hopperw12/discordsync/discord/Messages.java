@@ -1,5 +1,6 @@
 package cz.hopperw12.discordsync.discord;
 
+import cz.hopperw12.discordsync.events.UserUnregisterEvent;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 
@@ -48,18 +49,32 @@ public class Messages {
             .build();
     }
 
-    public static MessageEmbed getPlayerUnregisteredMessage() {
-        return new EmbedBuilder()
-            .setTitle("**Byl jsi odebrán ze serveru!**")
-            .setDescription("""
-                Tvůj účet byl odpojen manuálně, anebo z důvodu neaktivity.
-                Pro znovu-připojení kontaktuj člena Admin-Teamu.
-                """
-            )
-            .setColor(Color.RED)
-            .setFooter("JménoServeru Sync")
-            .setTimestamp(new Date().toInstant())
-            .build();
+    public static MessageEmbed getPlayerUnregisteredMessage(UserUnregisterEvent.Reason reason) {
+        return switch (reason) {
+            case INACTIVITY -> new EmbedBuilder()
+                .setTitle("**Byl jsi odebrán ze serveru!**")
+                .setDescription("""
+                    Tvůj účet byl odpojen z důvodu neaktivity.
+                    Pro znovu-připojení kontaktuj člena Admin-Teamu.
+                    """
+                )
+                .setColor(Color.RED)
+                .setFooter("JménoServeru Sync")
+                .setTimestamp(new Date().toInstant())
+                .build();
+
+            case MANUAL -> new EmbedBuilder()
+                .setTitle("**Byl jsi odebrán ze serveru!**")
+                .setDescription("""
+                    Tvůj účet byl úspěšně odpojen.
+                    Pro znovu-připojení kontaktuj člena Admin-Teamu.
+                    """
+                )
+                .setColor(Color.RED)
+                .setFooter("JménoServeru Sync")
+                .setTimestamp(new Date().toInstant())
+                .build();
+        };
     }
 
     public static MessageEmbed getPlayerRegisteredMessage(String playerName) {
