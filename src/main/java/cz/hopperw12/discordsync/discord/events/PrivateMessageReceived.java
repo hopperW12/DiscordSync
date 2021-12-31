@@ -2,6 +2,7 @@ package cz.hopperw12.discordsync.discord.events;
 
 import cz.hopperw12.discordsync.DiscordSync;
 import cz.hopperw12.discordsync.discord.Bot;
+import cz.hopperw12.discordsync.discord.Messages;
 import cz.hopperw12.discordsync.requests.RequestManager;
 import cz.hopperw12.discordsync.requests.Token;
 import cz.hopperw12.discordsync.user.RegisteredUser;
@@ -39,7 +40,7 @@ public class PrivateMessageReceived extends ListenerAdapter {
             //Neplatny token
             if (playerUUID == null) {
                 user.openPrivateChannel().queue(channel -> {
-                    channel.sendMessage("Tento token neexistuje!").queue();
+                    channel.sendMessage(Messages.getTokenNotExistsMessage()).queue();
                 });
                 return;
             }
@@ -48,14 +49,15 @@ public class PrivateMessageReceived extends ListenerAdapter {
             token = requestManager.getRequest(playerUUID);
             if (token.hasExpired()) {
                 user.openPrivateChannel().queue(channel -> {
-                    channel.sendMessage("Tento token expiroval!").queue();
+                    channel.sendMessage(Messages.getTokenExpiredMessage()).queue();
                 });
                 return;
             }
 
             if (userManager.isRegistered(user.getIdLong())) {
+                String playerName = userManager.get(user.getIdLong()).getPlayerName();
                 user.openPrivateChannel().queue(channel -> {
-                    channel.sendMessage("Tento účet je již propojen s účtem jiným!").queue();
+                    channel.sendMessage(Messages.getAccountAlreadyLinkedMessage(playerName)).queue();
                 });
                 return;
             }

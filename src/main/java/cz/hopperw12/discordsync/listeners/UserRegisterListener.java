@@ -2,6 +2,7 @@ package cz.hopperw12.discordsync.listeners;
 
 import cz.hopperw12.discordsync.DiscordSync;
 import cz.hopperw12.discordsync.discord.Bot;
+import cz.hopperw12.discordsync.discord.Messages;
 import cz.hopperw12.discordsync.events.UserRegisterEvent;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
@@ -60,7 +61,7 @@ public class UserRegisterListener implements Listener {
             player.sendMessage("Účet byl úspěšně propojen s tvým Discord účtem " + discordAccountName);
 
         user.openPrivateChannel().queue(channel ->
-            channel.sendMessage("Účet byl úspěšně propojen s tvým Minecraft účtem " + offlinePlayer.getName()).queue()
+            channel.sendMessage(Messages.getPlayerRegisteredMessage(offlinePlayer.getName())).queue()
         );
     }
 }
