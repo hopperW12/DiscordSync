@@ -14,7 +14,13 @@ public class Bot {
 
     public JDA jda;
 
+    private String token;
+
     public Bot(String token) {
+        this.token = token;
+    }
+
+    public void build() {
         DiscordSync main = DiscordSync.getInstance();
 
         try {

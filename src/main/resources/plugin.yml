@@ -4,6 +4,7 @@ main: cz.hopperw12.discordsync.DiscordSync
 api-version: 1.18
 authors: [hopperW12, novosadkry]
 depend: [AuthMe]
+softdepend: [EasyWhitelist]
 commands:
   link:
   unlink:
