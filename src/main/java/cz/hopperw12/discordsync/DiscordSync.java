@@ -34,6 +34,7 @@ public final class DiscordSync extends JavaPlugin {
         userManager = new UserManager();
 
         bot = new Bot(getConfig().getString("bot.token"));
+        bot.build();
     }
 
     @Override
