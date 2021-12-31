@@ -6,11 +6,12 @@ import cz.hopperw12.discordsync.events.UserRegisterEvent;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
-import org.apache.commons.lang.ObjectUtils;
+import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.exceptions.HierarchyException;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-
-import java.util.Objects;
 
 public class UserRegisterListener implements Listener {
 
@@ -43,7 +44,23 @@ public class UserRegisterListener implements Listener {
         if (member == null)
             return;
 
-        member.modifyNickname(registerUser.getPlayerName()).queue();
-    }
+        try {
+            member.modifyNickname(registerUser.getPlayerName()).queue();
+        } catch (HierarchyException e) {
+            main.getLogger().warning(e.getMessage());
+        }
 
+        User user = member.getUser();
+        String discordAccountName = user.getName() + "#" + user.getDiscriminator();
+
+        OfflinePlayer offlinePlayer = registerUser.getOfflinePlayer();
+        Player player = offlinePlayer.getPlayer();
+
+        if (player != null)
+            player.sendMessage("Účet byl úspěšně propojen s tvým Discord účtem " + discordAccountName);
+
+        user.openPrivateChannel().queue(channel ->
+            channel.sendMessage("Účet byl úspěšně propojen s tvým Minecraft účtem " + offlinePlayer.getName()).queue()
+        );
+    }
 }

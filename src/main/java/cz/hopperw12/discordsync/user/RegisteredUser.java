@@ -2,6 +2,7 @@ package cz.hopperw12.discordsync.user;
 
 import cz.hopperw12.discordsync.DiscordSync;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import java.util.Objects;
@@ -33,8 +34,12 @@ public class RegisteredUser {
         return discordUUID;
     }
 
+    public OfflinePlayer getOfflinePlayer() {
+        return Bukkit.getOfflinePlayer(minecraftUUID);
+    }
+
     public String getPlayerName() {
-        return Bukkit.getOfflinePlayer(minecraftUUID).getName();
+        return getOfflinePlayer().getName();
     }
 
     public long getLastOnline() {

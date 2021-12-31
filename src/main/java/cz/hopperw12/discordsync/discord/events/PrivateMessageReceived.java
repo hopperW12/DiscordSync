@@ -11,7 +11,6 @@ import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.priv.PrivateMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
@@ -60,8 +59,6 @@ public class PrivateMessageReceived extends ListenerAdapter {
 
             requestManager.removeRequest(playerUUID);
             userManager.registerUser(registeredUser);
-
-            user.openPrivateChannel().queue(channel -> channel.sendMessage("Pouzil jsi token.").queue());
         });
     }
 }

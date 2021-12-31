@@ -4,8 +4,8 @@ import cz.hopperw12.discordsync.DiscordSync;
 import cz.hopperw12.discordsync.events.UserRegisterEvent;
 import cz.hopperw12.discordsync.events.UserUnregisterEvent;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.io.IOException;
@@ -39,7 +39,6 @@ public class UserManager {
         Bukkit.getScheduler().runTaskTimer(main, this::unregisterExpired, 0L, checkPeriod);
     }
 
-    @SuppressWarnings("unchecked")
     public void registerUser(RegisteredUser user) {
         updateUser(user);
 
@@ -50,19 +49,46 @@ public class UserManager {
     }
 
     public void updateUser(RegisteredUser user) {
-        String path = String.format("players.%s", user.getPlayerName());
+        String path = String.format("players.%s", user.getMinecraftUUID());
 
-        cfg.set(path + ".minecraftUUID", user.getMinecraftUUID().toString());
-        cfg.set(path + ".discordUUID", user.getDiscordUUID());
-        cfg.set(path + ".lastOnline", user.getLastOnline());
+        cfg.set(path + ".minecraft.username", user.getPlayerName());
+        cfg.set(path + ".minecraft.lastOnline", user.getLastOnline());
+        cfg.set(path + ".discord.uuid", user.getDiscordUUID());
+
+        path = String.format("links.%s", user.getDiscordUUID());
+        cfg.set(path, user.getMinecraftUUID().toString());
 
         save();
     }
 
-    @SuppressWarnings("unchecked")
-    public void unregisterUser(RegisteredUser user) {
-        String path = String.format("players.%s", user.getPlayerName());
+    public void unregisterUser(OfflinePlayer player) {
+        unregisterUser(player.getUniqueId());
+    }
 
+    public void unregisterUser(UUID minecraftUUID) {
+        String path = String.format("players.%s", minecraftUUID);
+        long discordUUID = cfg.getLong(path + ".discord.uuid");
+
+        unregisterUser(new RegisteredUser(minecraftUUID, discordUUID));
+    }
+
+    public void unregisterUser(long discordUUID) {
+        String path = String.format("links.%s", discordUUID);
+
+        if (!cfg.isSet(path))
+            return;
+
+        String minecraftUUID = cfg.getString(path);
+        if (minecraftUUID == null) return;
+
+        unregisterUser(new RegisteredUser(UUID.fromString(minecraftUUID), discordUUID));
+    }
+
+    public void unregisterUser(RegisteredUser user) {
+        String path = String.format("players.%s", user.getMinecraftUUID());
+        cfg.set(path, null);
+
+        path = String.format("links.%s", user.getDiscordUUID());
         cfg.set(path, null);
 
         UserUnregisterEvent unregisterEvent = new UserUnregisterEvent(user);
@@ -71,35 +97,43 @@ public class UserManager {
         save();
     }
 
-    @SuppressWarnings("unchecked")
-    public boolean isRegistered(Player player) {
-        String path = String.format("players.%s", player.getName());
+    public boolean isRegistered(OfflinePlayer player) {
+        String path = String.format("players.%s", player.getUniqueId());
 
         return cfg.isSet(path);
     }
 
-    public RegisteredUser get(Player player) {
-        return get(player.getName());
+    public RegisteredUser get(OfflinePlayer player) {
+        return get(player.getUniqueId());
     }
 
-    @SuppressWarnings("unchecked")
-    public RegisteredUser get(String playerName) {
-        String path = String.format("players.%s", playerName);
+    public RegisteredUser get(long discordUUID) {
+        String path = String.format("links.%s", discordUUID);
 
         if (!cfg.isSet(path))
             return null;
 
-        String minecraftUUID = cfg.getString(path + ".minecraftUUID");
-        long discordUUID = cfg.getLong(path + ".discordUUID");
-        long lastOnline = cfg.getLong(path + ".lastOnline");
+        String minecraftUUID = cfg.getString(path);
+        if (minecraftUUID == null) return null;
 
-        RegisteredUser user = new RegisteredUser(UUID.fromString(minecraftUUID), discordUUID);
+        return get(UUID.fromString(minecraftUUID));
+    }
+
+    public RegisteredUser get(UUID minecraftUUID) {
+        String path = String.format("players.%s", minecraftUUID);
+
+        if (!cfg.isSet(path))
+            return null;
+
+        long discordUUID = cfg.getLong(path + ".discord.uuid");
+        long lastOnline = cfg.getLong(path + ".minecraft.lastOnline");
+
+        RegisteredUser user = new RegisteredUser(minecraftUUID, discordUUID);
         user.setLastOnline(lastOnline);
 
         return user;
     }
 
-    @SuppressWarnings("unchecked")
     public List<RegisteredUser> getAll() {
         if (!cfg.isConfigurationSection("players"))
             return Collections.emptyList();
@@ -107,17 +141,8 @@ public class UserManager {
         return cfg.getConfigurationSection("players")
                 .getKeys(false)
                 .stream()
-                .map(this::get)
+                .map(s -> get(UUID.fromString(s)))
                 .collect(Collectors.toList());
-    }
-
-    public void save() {
-        try {
-            cfg.save(file);
-        } catch (IOException e) {
-            main.getLogger().severe("Failed to save users.yml");
-            e.printStackTrace();
-        }
     }
 
     public void unregisterExpired() {
@@ -127,13 +152,22 @@ public class UserManager {
         List<RegisteredUser> users = getAll();
 
         for (RegisteredUser user : users) {
-            if (Bukkit.getPlayer(user.getMinecraftUUID()) != null) {
-                user.setLastOnline(System.currentTimeMillis());
+            OfflinePlayer offlinePlayer = user.getOfflinePlayer();
+
+            if (offlinePlayer.isOnline())
                 continue;
-            }
 
             if (user.getLastOnline() + expiration < System.currentTimeMillis())
                 unregisterUser(user);
+        }
+    }
+
+    public void save() {
+        try {
+            cfg.save(file);
+        } catch (IOException e) {
+            main.getLogger().severe("Failed to save users.yml");
+            e.printStackTrace();
         }
     }
 }
