@@ -1,6 +1,7 @@
 package cz.hopperw12.discordsync.discord;
 
 import cz.hopperw12.discordsync.DiscordSync;
+import cz.hopperw12.discordsync.discord.events.GuildMessageReceived;
 import cz.hopperw12.discordsync.discord.events.PrivateMessageReceived;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -30,6 +31,7 @@ public class Bot {
                     .setMemberCachePolicy(MemberCachePolicy.ALL)
                     .enableIntents(GatewayIntent.GUILD_MEMBERS, GatewayIntent.DIRECT_MESSAGES)
                     .addEventListeners(new PrivateMessageReceived(this))
+                    .addEventListeners(new GuildMessageReceived(this))
                     .build();
 
             jda.awaitReady();
