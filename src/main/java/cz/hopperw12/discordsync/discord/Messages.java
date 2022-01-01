@@ -74,6 +74,21 @@ public class Messages {
                 .setFooter("JménoServeru Sync")
                 .setTimestamp(new Date().toInstant())
                 .build();
+
+            case UNRESTRICTED -> new EmbedBuilder()
+                .setTitle("**Chyba aplikace!**")
+                .setDescription("""
+                    Pokud si dostal tuhle zprávu,
+                    tak se něco hodně pokazilo.
+                    
+                    Kontaktuj někoho z Admin-Teamu
+                    a pošli mu screen.
+                """
+                )
+                .setColor(Color.RED)
+                .setFooter("JménoServeru Sync")
+                .setTimestamp(new Date().toInstant())
+                .build();
         };
     }
 

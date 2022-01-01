@@ -4,6 +4,7 @@ import cz.hopperw12.discordsync.DiscordSync;
 import cz.hopperw12.discordsync.discord.Bot;
 import cz.hopperw12.discordsync.discord.Messages;
 import cz.hopperw12.discordsync.events.UserRegisterEvent;
+import cz.hopperw12.discordsync.user.UserManager;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
@@ -20,6 +21,8 @@ public class UserRegisterListener implements Listener {
     public void onRegister(UserRegisterEvent event) {
 
         DiscordSync main = DiscordSync.getInstance();
+        UserManager userManager = main.userManager;
+
         long guildID = main.getConfig().getLong("discord.guildID");
         long roleID = main.getConfig().getLong("discord.roleID");
         Bot bot = main.bot;
@@ -29,6 +32,11 @@ public class UserRegisterListener implements Listener {
 
         OfflinePlayer offlinePlayer = registerUser.getOfflinePlayer();
         Player player = offlinePlayer.getPlayer();
+
+        if (userManager.isUnrestricted(offlinePlayer)) {
+            main.getLogger().severe("Unrestricted player '" + offlinePlayer.getName() + "' has linked accounts (this should not happen)");
+            return;
+        }
 
         if (guild == null) {
             main.getLogger().warning("Defined guildID doesn't match any guilds");

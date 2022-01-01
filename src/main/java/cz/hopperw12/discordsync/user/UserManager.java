@@ -193,6 +193,11 @@ public class UserManager {
         for (RegisteredUser user : users) {
             OfflinePlayer offlinePlayer = user.getOfflinePlayer();
 
+            if (isUnrestricted(offlinePlayer.getName())) {
+                unregisterUser(user, UserUnregisterEvent.Reason.UNRESTRICTED);
+                continue;
+            }
+
             if (offlinePlayer.isOnline())
                 continue;
 

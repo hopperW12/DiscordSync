@@ -35,6 +35,7 @@ public class CommandLink implements CommandExecutor {
 
         if (userManager.isUnrestricted(player)) {
             player.sendMessage("Ty propojovat účty nemusíš :-)");
+            return false;
         }
 
         Token token = requestManager.getRequest(player);

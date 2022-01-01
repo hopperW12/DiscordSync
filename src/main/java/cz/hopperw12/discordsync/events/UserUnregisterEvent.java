@@ -7,7 +7,8 @@ import org.bukkit.event.HandlerList;
 public class UserUnregisterEvent extends Event {
     public enum Reason {
         INACTIVITY,
-        MANUAL
+        MANUAL,
+        UNRESTRICTED
     }
 
     private static final HandlerList HANDLERS = new HandlerList();

@@ -27,13 +27,13 @@ public class CommandUnlink implements CommandExecutor {
             if (args.length != 1) {
                 String playerName = player.getName();
 
-                if (!userManager.isRegistered(player)) {
-                    player.sendMessage(ChatColor.RED + "Tvůj účet není propojený s Discordem.");
+                if (userManager.isUnrestricted(player)) {
+                    player.sendMessage(ChatColor.GREEN + "Ty propojovat účty nemusíš :-)");
                     return true;
                 }
 
-                if (userManager.isUnrestricted(player)) {
-                    player.sendMessage(ChatColor.GREEN + "Ty propojovat účty nemusíš :-)");
+                if (!userManager.isRegistered(player)) {
+                    player.sendMessage(ChatColor.RED + "Tvůj účet není propojený s Discordem.");
                     return true;
                 }
 
@@ -50,6 +50,7 @@ public class CommandUnlink implements CommandExecutor {
 
             if (!player.hasPermission("discordsync.admin")) {
                 player.sendMessage(ChatColor.RED + "Na tuto akci nemáš dostatečné oprávnění!");
+                return true;
             }
 
             String playerName = args[0];

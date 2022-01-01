@@ -25,8 +25,11 @@ public class UserUnregisterListener implements Listener {
         OfflinePlayer offlinePlayer = event.getUser().getOfflinePlayer();
         Player player = offlinePlayer.getPlayer();
 
+        if (event.getReason() == UserUnregisterEvent.Reason.UNRESTRICTED)
+            return;
+
         if (event.getReason() == UserUnregisterEvent.Reason.INACTIVITY)
-            main.getLogger().info("Unlinking player " + offlinePlayer.getName() + " due to inactivity");
+            main.getLogger().info("Unlinking player '" + offlinePlayer.getName() + "' due to inactivity");
 
         Bukkit.dispatchCommand(
             Bukkit.getConsoleSender(),
