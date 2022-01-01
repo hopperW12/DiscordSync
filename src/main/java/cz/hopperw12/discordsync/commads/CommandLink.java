@@ -29,12 +29,12 @@ public class CommandLink implements CommandExecutor {
         Player player = ((Player) sender);
 
         if (userManager.isRegistered(player)) {
-            player.sendMessage("Už jsi zaregistrovaný!");
+            player.sendMessage(org.bukkit.ChatColor.RED + "Tvůj účet je již propojen!");
             return false;
         }
 
         if (userManager.isUnrestricted(player)) {
-            player.sendMessage("Ty propojovat účty nemusíš :-)");
+            player.sendMessage(org.bukkit.ChatColor.GREEN + "Ty propojovat účty nemusíš :-)");
             return false;
         }
 
@@ -45,19 +45,20 @@ public class CommandLink implements CommandExecutor {
             token = requestManager.addRequest(player);
         }
 
-        TextComponent msg = new TextComponent("Použíj tento token: ");
+        TextComponent msg = new TextComponent("\n\n\nPoužíj tento kód: ");
         msg.setBold(true);
-        msg.setItalic(true);
         msg.setColor(ChatColor.DARK_GRAY);
 
         TextComponent tokenMsg = new TextComponent(token.toString());
         tokenMsg.setBold(true);
+        tokenMsg.setItalic(true);
         tokenMsg.setUnderlined(true);
         tokenMsg.setColor(ChatColor.GREEN);
         tokenMsg.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("Klikni pro zkopírování do schránky").create()));
         tokenMsg.setClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, token.toString()));
 
         msg.addExtra(tokenMsg);
+        msg.addExtra("\n\n\n");
 
         player.spigot().sendMessage(msg);
 

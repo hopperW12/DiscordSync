@@ -70,7 +70,7 @@ public class UserUnregisterListener implements Listener {
         }
 
         if (player != null)
-            player.kickPlayer("Tvůj účet byl úspěšně odpojen. Pro znovu-získání přístupu napiš členovi Admin-Teamu.");
+            player.kickPlayer("Tvůj účet byl odpojen.\n\nPro znovuzískání přístupu napiš členovi Admin-Teamu.");
 
         member.getUser().openPrivateChannel().queue(channel ->
             channel.sendMessage(Messages.getPlayerUnregisteredMessage(event.getReason())).queue()

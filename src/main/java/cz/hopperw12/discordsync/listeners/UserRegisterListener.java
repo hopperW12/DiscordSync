@@ -10,6 +10,7 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.exceptions.HierarchyException;
+import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -66,7 +67,7 @@ public class UserRegisterListener implements Listener {
         }
 
         if (player != null)
-            player.sendMessage("Účet byl úspěšně propojen s tvým Discord účtem " + discordAccountName);
+            player.sendMessage("Účet byl úspěšně propojen s tvým Discord účtem " + ChatColor.GOLD + discordAccountName);
 
         user.openPrivateChannel().queue(channel ->
             channel.sendMessage(Messages.getPlayerRegisteredMessage(offlinePlayer.getName())).queue()
