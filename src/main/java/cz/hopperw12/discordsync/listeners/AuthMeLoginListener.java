@@ -17,7 +17,7 @@ public class AuthMeLoginListener implements Listener {
         DiscordSync main = DiscordSync.getInstance();
         UserManager userManager = main.userManager;
 
-        if (!userManager.isRegistered(player))
+        if (!userManager.isRegistered(player) && !userManager.isUnrestricted(player))
             player.sendMessage(ChatColor.DARK_RED + "Před pokračování propoj účet s discordem! (/link)");
     }
 

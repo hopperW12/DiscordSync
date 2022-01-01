@@ -5,7 +5,10 @@ import cz.hopperw12.discordsync.requests.RequestManager;
 import cz.hopperw12.discordsync.requests.Token;
 import cz.hopperw12.discordsync.user.UserManager;
 import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.chat.*;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -28,6 +31,10 @@ public class CommandLink implements CommandExecutor {
         if (userManager.isRegistered(player)) {
             player.sendMessage("Už jsi zaregistrovaný!");
             return false;
+        }
+
+        if (userManager.isUnrestricted(player)) {
+            player.sendMessage("Ty propojovat účty nemusíš :-)");
         }
 
         Token token = requestManager.getRequest(player);

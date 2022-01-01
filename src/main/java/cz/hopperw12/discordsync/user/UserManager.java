@@ -84,6 +84,7 @@ public class UserManager {
         unregisterUser(new RegisteredUser(UUID.fromString(minecraftUUID), discordUUID), reason);
     }
 
+    @Deprecated
     public void unregisterUser(String playerName, UserUnregisterEvent.Reason reason) {
         List<RegisteredUser> users = getAll();
 
@@ -119,6 +120,7 @@ public class UserManager {
         return cfg.isSet(path);
     }
 
+    @Deprecated
     public boolean isRegistered(String playerName) {
         List<RegisteredUser> users = getAll();
 
@@ -130,6 +132,14 @@ public class UserManager {
         }
 
         return false;
+    }
+
+    public boolean isUnrestricted(OfflinePlayer player) {
+        return isUnrestricted(player.getName());
+    }
+
+    public boolean isUnrestricted(String playerName) {
+        return main.getConfig().getStringList("unrestricted").contains(playerName);
     }
 
     public RegisteredUser get(OfflinePlayer player) {

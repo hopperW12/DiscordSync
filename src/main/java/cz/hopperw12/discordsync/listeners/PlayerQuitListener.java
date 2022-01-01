@@ -17,7 +17,7 @@ public class PlayerQuitListener implements Listener {
         UserManager userManager = main.userManager;
         Player player = event.getPlayer();
 
-        if (!userManager.isRegistered(player))
+        if (!userManager.isRegistered(player) || userManager.isUnrestricted(player))
             return;
 
         RegisteredUser registeredUser = userManager.get(player);

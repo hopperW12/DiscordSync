@@ -30,7 +30,9 @@ public class ListenerService {
         UserManager userManager = main.userManager;
         AuthMeApi authMeApi = AuthMeApi.getInstance();
 
-        return !userManager.isRegistered(player) && authMeApi.isAuthenticated(player);
+        return !userManager.isRegistered(player)
+            && !userManager.isUnrestricted(player)
+            && authMeApi.isAuthenticated(player);
 
     }
 

@@ -12,3 +12,7 @@ timings: # in minutes
     check-expiration: 60
   token:
     expire-in: 5
+
+unrestricted:
+  - hopperW12
+  - novosadkry

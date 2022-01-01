@@ -15,7 +15,7 @@ import java.util.List;
 
 public class CommandUnlink implements CommandExecutor {
 
-    private List<String> players =new ArrayList<String>();
+    private List<String> players = new ArrayList<>();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -27,8 +27,13 @@ public class CommandUnlink implements CommandExecutor {
             if (args.length != 1) {
                 String playerName = player.getName();
 
-                if (!userManager.isRegistered(playerName)) {
+                if (!userManager.isRegistered(player)) {
                     player.sendMessage(ChatColor.RED + "Tvůj účet není propojený s Discordem.");
+                    return true;
+                }
+
+                if (userManager.isUnrestricted(player)) {
+                    player.sendMessage(ChatColor.GREEN + "Ty propojovat účty nemusíš :-)");
                     return true;
                 }
 
@@ -39,7 +44,7 @@ public class CommandUnlink implements CommandExecutor {
                 }
 
                 players.remove(playerName);
-                userManager.unregisterUser(playerName, UserUnregisterEvent.Reason.MANUAL);
+                userManager.unregisterUser(player, UserUnregisterEvent.Reason.MANUAL);
                 return true;
             }
 
