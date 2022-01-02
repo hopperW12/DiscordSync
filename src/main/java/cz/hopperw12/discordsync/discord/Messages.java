@@ -55,8 +55,7 @@ public class Messages {
                 .setTitle("**Byl jsi odebrán ze serveru!**")
                 .setDescription("""
                     Tvůj účet byl odpojen z důvodu neaktivity.
-                    
-                    Pro znovupřipojení kontaktuj člena Admin-Teamu.
+                    Pokud se jedná o chybu, kontaktuj člena Admin-Teamu.
                     """
                 )
                 .setColor(Color.RED)
@@ -68,8 +67,7 @@ public class Messages {
                 .setTitle("**Byl jsi odebrán ze serveru!**")
                 .setDescription("""
                     Tvůj účet byl odpojen.
-                    
-                    Pro znovupřipojení kontaktuj člena Admin-Teamu.
+                    Pokud se jedná o chybu, kontaktuj člena Admin-Teamu.
                     """
                 )
                 .setColor(Color.RED)
@@ -98,8 +96,7 @@ public class Messages {
         return new EmbedBuilder()
             .setTitle("**Úspěšná registrace!**")
             .setDescription("""
-                Tvůj účet byl úspěšně propojen
-                s Minecraft účtem ***""" + playerName + "***"
+                Tvůj účet byl úspěšně propojen s účtem ***""" + playerName + "***"
             )
             .setColor(Color.GREEN)
             .setFooter("JménoServeru Sync")
