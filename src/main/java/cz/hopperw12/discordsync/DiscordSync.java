@@ -40,8 +40,8 @@ public final class DiscordSync extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        bot.shutdown();
         userManager.save();
+        bot.shutdown();
     }
 
     @SuppressWarnings("ConstantConditions")
