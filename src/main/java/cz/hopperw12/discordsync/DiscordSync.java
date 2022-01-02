@@ -44,6 +44,7 @@ public final class DiscordSync extends JavaPlugin {
         userManager.save();
     }
 
+    @SuppressWarnings("ConstantConditions")
     private void registerCommands() {
         getCommand("link").setExecutor(new CommandLink());
 
