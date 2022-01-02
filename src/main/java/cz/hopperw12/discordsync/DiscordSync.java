@@ -5,6 +5,7 @@ import cz.hopperw12.discordsync.commads.CommandUnlink;
 import cz.hopperw12.discordsync.discord.Bot;
 import cz.hopperw12.discordsync.listeners.*;
 import cz.hopperw12.discordsync.requests.RequestManager;
+import cz.hopperw12.discordsync.tabcompleter.UnlinkTabCompleter;
 import cz.hopperw12.discordsync.user.UserManager;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
@@ -45,7 +46,9 @@ public final class DiscordSync extends JavaPlugin {
 
     private void registerCommands() {
         getCommand("link").setExecutor(new CommandLink());
+
         getCommand("unlink").setExecutor(new CommandUnlink());
+        getCommand("unlink").setTabCompleter(new UnlinkTabCompleter());
     }
 
     private void registerEvents() {
